@@ -347,7 +347,10 @@ in
             requires = lib.optionals cfg.createDatabase [ "postgresql.service" ];
             wants = [ "network-online.target" ];
             after = [ "network-online.target" ] ++ lib.optionals cfg.createDatabase [ "postgresql.service" ];
-            before = [ "authentik.service" "authentik-migrate.service" ];
+            before = [
+              "authentik.service"
+              "authentik-migrate.service"
+            ];
             restartTriggers = [ config.environment.etc."authentik/config.yml".source ];
             environment = mkMerge [
               environment
@@ -452,6 +455,9 @@ in
               proxyWebsockets = true;
               proxyPass = "https://localhost:9443";
             };
+            locations."/outpost.goauthentik.io/" = {
+              proxyPass = "https://localhost:9443";
+            };
           };
         };
       }
@@ -523,7 +529,7 @@ in
       {
         assertions = [
           {
-            assertion = config.services.authentik.authentikComponents.gopkgs?rac;
+            assertion = config.services.authentik.authentikComponents.gopkgs ? rac;
             message = ''
               guacamole-server is not available on the host's platform!
             '';
