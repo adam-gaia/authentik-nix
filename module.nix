@@ -456,7 +456,16 @@ in
               proxyPass = "https://localhost:9443";
             };
             locations."/outpost.goauthentik.io/" = {
+              # needed for embedded outpost
               proxyPass = "https://localhost:9443/outpost.goauthentik.io";
+              extraConfig = ''
+                proxy_set_header        Host $host;
+                proxy_set_header        X-Original-URL $scheme://$http_host$request_uri;
+                add_header              Set-Cookie $auth_cookie;
+                auth_request_set        $auth_cookie $upstream_http_set_cookie;
+                proxy_pass_request_body off;
+                proxy_set_header        Content-Length "";
+              '';
             };
           };
         };
