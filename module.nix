@@ -456,7 +456,7 @@ in
               proxyPass = "https://localhost:9443";
             };
             locations."/outpost.goauthentik.io/" = {
-              proxyPass = "https://localhost:9443";
+              proxyPass = "https://localhost:9443/outpost.goauthentik.io";
             };
           };
         };
